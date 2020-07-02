@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>性能自动化报表</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .header .title {
+            text-align: center;
+            height: 100px;
+            width: 100%;
+            line-height: 100px;
+        }
+
+        .content .report thead tr th {
+            padding-right: 3rem;
+        }
+
+        .content .report {
+            width: 80%;
+            margin: 0 auto;
+        }
+        .report tbody tr td{
+            text-align: center;
+            padding-right: 3rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+    <div class="header">
+        <div class="title">
+            性能自动化报表
+        </div>
+    </div>
+    <div class="content">
+        <table class="report">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>快应用名</th>
+                    <th>快应用版本</th>
+                    <th>快应用平台版本</th>
+                    <th>机型</th>
+                    <th>点击->完成</th>
+                    <th>渲染->完成</th>
+                    <th><button>平均值</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(key,index) in object">
+                    <td>{{index+1}}</td>
+                    <td v-for="(value, key,index) in key">
+                       {{value}}
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class=" footer">
+    </div>
+</div>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                object:[["demo", "1", "V3.4", "oppo ace", 6, 3],["demo", "1", "V3.4", "oppo ace", 3, 4]],
+                tableData: [],
+                obj:{
+                    id: '0',
+                    name: '0',
+                    amount1: '0',
+                    amount2: '0',
+                    amount3: 0
+                }
+                },
+               
+            method: {
+                list_to_object(){
+                    let that=this
+                    for(let i=0;i<that.object.length;i++){
+                        that.obj.id=that.object[i][0]
+                        that.obj.name=that.object[i][1]
+                        that.obj.amount1=that.object[i][2]
+                        that.obj.amount2=that.object[i][3]
+                        that.obj.amount3=that.object[i][4]
+                        that.tableData.append(that.obj)
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

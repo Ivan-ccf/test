@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <style type="text/css">
+        .header .title {
+            text-align: center;
+            height: 100px;
+            width: 100%;
+            line-height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="header">
+            <div class="title">
+                性能自动化报表
+            </div>
+        </div>
+        <template>
+            <el-table :data="tableData" border height="500" :summary-method="getSummaries" show-summary
+                style="width: 100%; margin-top: 20px">
+                <el-table-column prop="id" label="ID" width="180">
+                </el-table-column>
+                <el-table-column prop="name" label="姓名">
+                </el-table-column>
+                <el-table-column prop="amount1" label="数值 1（元）">
+                </el-table-column>
+                <el-table-column prop="amount2" label="数值 2（元）">
+                </el-table-column>
+                <el-table-column prop="amount3" label="数值 3（元）">
+                </el-table-column>
+            </el-table>
+        </template>
+    </div>
+    <script>
+        var Main = {
+            data() {
+                return {
+                    object: [["demo", "2", "V3.4", "oppo ace", 6], ["demo", "3", "V3.4", "oppo ace", 3]],
+                    tableData: [],
+                    obj: {
+                        id: '0',
+                        name: '0',
+                        amount1: '0',
+                        amount2: '0',
+                        amount3: 0
+                    }
+                };
+            },
+            created: function () {
+                let that = this
+                for (let i = 0; i < that.object.length; i++) {
+                    console.info(i)
+                    that.obj.id = that.object[i][0]
+                    that.obj.name = that.object[i][1]
+                    that.obj.amount1 = that.object[i][2]
+                    that.obj.amount2 = that.object[i][3]
+                    that.obj.amount3 = that.object[i][4]
+                    that.tableData.append(that.obj)
+                    console.log(this.tableData)
+                }
+                
+            },
+            methods: {
+                getSummaries(param) {
+                    const { columns, data } = param;
+                    const sums = [];
+                    columns.forEach((column, index) => {
+                        if (index === 0) {
+                            sums[index] = '统计';
+                            return;
+                        }
+                        if (index === 1) {
+                            sums[index] = '总共运行次数';
+                            return;
+                        }
+                        if (index === 3) {
+                            sums[index] = '平均值';
+                            return;
+                        }
+                        if (index === 2) {
+                            sums[index] = 111;
+                            return;
+                        }
+                        const values = data.map(item => Number(item[column.property]));
+                        let numbers=0
+                        if (!values.every(value => isNaN(value))) {
+                            sums[index] = values.reduce((prev, curr) => {
+                                const value = Number(curr);
+                                if (!isNaN(value)) {
+                                    numbers+=1
+                                    return prev + curr;
+                                } else {
+                                    return prev;
+                                }
+                            }, 0);
+                            sums[index] =sums[index]/numbers
+                            sums[index] += 'ms';
+                        } else {
+                            sums[index] = 'N/A';
+                        }
+                    });
+
+                    return sums;
+                },
+
+            }
+        };
+        var Ctor = Vue.extend(Main)
+        new Ctor().$mount('#app')
+    </script>
+</body>
+
+</html>
