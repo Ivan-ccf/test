@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>性能自动化报表</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+
+        .header .title {
+            text-align: center;
+            height: 100px;
+            width: 100%;
+            line-height: 100px;
+        }
+
+        .content .report th {
+            padding-right: 3rem;
+        }
+
+        .content .report {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body id="app">
+    <div class="header">
+        <div class="title">
+            性能自动化报表
+        </div>
+    </div>
+    <div class="content">
+        <table class="report">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>快应用名</th>
+                    <th>快应用版本</th>
+                    <th>快应用平台版本</th>
+                    <th>机型</th>
+                    <th>执行次数</th>
+                    <th>平均值</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td v-for="(value, key,index) in object">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="footer"></div>
+    <script>
+        new Vue({
+            el: "app",
+            data: {
+                object: {
+                    name: "携程旅行",
+                    vision: "80",
+                    platformVision: "3.4",
+                    deviceId: "oppo ace",
+                    number: "100",
+                    average: "1.5"
+                }
+            },
+            method: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>
