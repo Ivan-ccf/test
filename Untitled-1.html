@@ -10,14 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <style type="text/css">
-        .header .title {
-            text-align: center;
-            height: 100px;
-            width: 100%;
-            line-height: 100px;
-        }
-    </style>
+
 </head>
 
 <body>
@@ -28,17 +21,22 @@
             </div>
         </div>
         <template>
-            <el-table :data="tableData" border height="500" :summary-method="getSummaries" show-summary
+            <el-table :data="tableData" border height="85%" :summary-method="getSummaries" show-summary
                 style="width: 100%; margin-top: 20px">
-                <el-table-column prop="id" label="ID" width="180">
+                <el-table-column prop="id" label="快应用名" width="180"
+                    :filters="[{ text: 'demo', value: 'demo' }, { text: '携程', value: 'startupxiecheng' }]"
+                    :filter-method="filterTag">
                 </el-table-column>
-                <el-table-column prop="name" label="姓名">
+                <el-table-column prop="name" label="应用版本">
                 </el-table-column>
-                <el-table-column prop="amount1" label="数值 1（元）">
+                <el-table-column prop="amount1" label="快应用版本">
                 </el-table-column>
-                <el-table-column prop="amount2" label="数值 2（元）">
+                <el-table-column prop="amount2" label="手机型号" :filters="[{ text: 'ace', value: 'oppoace' }, { text: 'r11s', value: 'oppor 11s' }]"
+                :filter-method="filterTag">
                 </el-table-column>
-                <el-table-column prop="amount3" label="数值 3（元）">
+                <el-table-column prop="amount3" sortable label="渲染->完成">
+                </el-table-column>
+                <el-table-column prop="amount4" sortable label="点击->完成">
                 </el-table-column>
             </el-table>
         </template>
@@ -47,30 +45,38 @@
         var Main = {
             data() {
                 return {
-                    object: [["demo", "2", "V3.4", "oppo ace", 6], ["demo", "3", "V3.4", "oppo ace", 3]],
+                    object: [["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppoace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2], ["demo", "2", "V3.4", "oppo ace", 6, 1], ["demo", "3", "V3.4", "oppo ace", 3, 2],
+                    ],
                     tableData: [],
-                    obj: {
-                        id: '0',
-                        name: '0',
-                        amount1: '0',
-                        amount2: '0',
-                        amount3: 0
-                    }
                 };
             },
             created: function () {
                 let that = this
                 for (let i = 0; i < that.object.length; i++) {
-                    console.info(i)
-                    that.obj.id = that.object[i][0]
-                    that.obj.name = that.object[i][1]
-                    that.obj.amount1 = that.object[i][2]
-                    that.obj.amount2 = that.object[i][3]
-                    that.obj.amount3 = that.object[i][4]
-                    that.tableData.append(that.obj)
-                    console.log(this.tableData)
+                    let obj = {
+                        id: '0',
+                        name: '0',
+                        amount1: '0',
+                        amount2: '0',
+                        amount3: 0,
+                        amount4: 0,
+                    }
+                    obj.id = that.object[i][0]
+                    obj.name = that.object[i][1]
+                    obj.amount1 = that.object[i][2]
+                    obj.amount2 = that.object[i][3]
+                    obj.amount3 = that.object[i][4]
+                    obj.amount4 = that.object[i][5]
+                    that.tableData.push(obj)
+
                 }
-                
+
             },
             methods: {
                 getSummaries(param) {
@@ -81,45 +87,58 @@
                             sums[index] = '统计';
                             return;
                         }
-                        if (index === 1) {
-                            sums[index] = '总共运行次数';
-                            return;
-                        }
-                        if (index === 3) {
-                            sums[index] = '平均值';
-                            return;
-                        }
-                        if (index === 2) {
-                            sums[index] = 111;
-                            return;
-                        }
                         const values = data.map(item => Number(item[column.property]));
-                        let numbers=0
+                        let numbers = 0
                         if (!values.every(value => isNaN(value))) {
                             sums[index] = values.reduce((prev, curr) => {
                                 const value = Number(curr);
                                 if (!isNaN(value)) {
-                                    numbers+=1
+                                    numbers += 1
                                     return prev + curr;
                                 } else {
                                     return prev;
                                 }
                             }, 0);
-                            sums[index] =sums[index]/numbers
-                            sums[index] += 'ms';
+                            sums[1] = '总共运行次数 : ' + numbers
+                            sums[index] = sums[index] / numbers
+                            sums[index] = "平均值：" + sums[index] + 'ms';
                         } else {
                             sums[index] = 'N/A';
                         }
                     });
-
                     return sums;
                 },
-
+                formatter(row, column) {
+                    return row.address;
+                },
+                filterTag(value, row) {
+                    return row.tag === value;
+                },
+                filterHandler(value, row, column) {
+                    const property = column['property'];
+                    return row[property] === value;
+                }
             }
         };
         var Ctor = Vue.extend(Main)
         new Ctor().$mount('#app')
     </script>
+    <style type="text/css">
+        .header .title {
+            text-align: center;
+            height: 100px;
+            width: 100%;
+            line-height: 100px;
+        }
+
+        html,
+        body,
+        #app,
+        template {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </body>
 
 </html>
